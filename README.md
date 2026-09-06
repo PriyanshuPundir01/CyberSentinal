@@ -1,193 +1,174 @@
+<div style="font-family: 'Bookman Old Style', 'URW Bookman', 'Bookman', 'Georgia', serif; color: #e2e8f0;">
+
 <div align="center">
 
-# 🛡️ ℂ𝕐𝔹𝔼ℝ𝕊𝔼ℕ𝕋𝕀ℕ𝔸𝕃 🛡️
-### ◈ `v2.0` // ℕ𝕖𝕩𝕥-𝔾𝕖𝕟 ℕ𝕖𝕥𝕨𝕠𝕣𝕜 𝕋𝕙𝕣𝕖𝕒𝕥 & 𝕊𝕆ℂ 𝔸𝕟𝕠𝕞𝕒𝕝𝕪 𝔸𝕟𝕒𝕝𝕪𝕫𝕖𝕣 ◈
+<h1 style="font-family: 'Cooper Black', 'Arial Black', serif; font-size: 4.5rem; letter-spacing: 1.5px; color: #00ff99; margin-bottom: 0px; text-shadow: 0 0 20px rgba(0,255,153,0.4);">
+  🛡️ CYBERSENTINAL 🛡️
+</h1>
+<h3 style="font-family: 'Bookman Old Style', 'URW Bookman', serif; font-weight: normal; color: #00d4ff; margin-top: 4px;">
+  ◈ <i> Next-Gen Network Threat & SOC Anomaly Analyzer</i> ◈
+</h3>
 
 <br/>
 
 [![Python](https://img.shields.io/badge/PYTHON-3.8%2B-00ff99?style=for-the-badge&logo=python&logoColor=050505)](https://python.org)
 [![CustomTkinter](https://img.shields.io/badge/GUI-CUSTOMTKINTER-00d4ff?style=for-the-badge&logo=tcl&logoColor=050505)](https://github.com/TomSchimansky/CustomTkinter)
-[![Matplotlib](https://img.shields.io/badge/VIZ-MATPLOTLIB_GRAPHS-ff007f?style=for-the-badge&logo=databricks&logoColor=ffffff)](https://matplotlib.org/)
-[![Scapy](https://img.shields.io/badge/SNIFFER-SCAPY_ENABLED-ffb703?style=for-the-badge&logo=wireshark&logoColor=050505)](https://scapy.net/)
-[![Threat Engine](https://img.shields.io/badge/IDS-ANOMALY_ENGINE-00ff66?style=for-the-badge&logo=statuspage&logoColor=050505)](#)
-[![License: MIT](https://img.shields.io/badge/LICENSE-MIT-a78bfa?style=for-the-badge&logo=open-source-initiative&logoColor=050505)](LICENSE)
+[![Matplotlib](https://img.shields.io/badge/CHARTS-MATPLOTLIB-ff007f?style=for-the-badge&logo=databricks&logoColor=ffffff)](https://matplotlib.org/)
+[![Scapy](https://img.shields.io/badge/SNIFFER-SCAPY_OPTIONAL-ffb703?style=for-the-badge&logo=wireshark&logoColor=050505)](https://scapy.net/)
+[![Status](https://img.shields.io/badge/STATUS-OPERATIONAL-00ff66?style=for-the-badge&logo=statuspage&logoColor=050505)](#)
+[![License](https://img.shields.io/badge/LICENSE-MIT-a78bfa?style=for-the-badge&logo=open-source-initiative&logoColor=050505)](LICENSE)
 
 <br/>
 
-<p align="center">
-  <b>✦ <a href="#-overview--mission">Overview</a> ✦</b> &nbsp;•&nbsp;
-  <b>✦ <a href="#-soc-terminal-preview">Terminal Preview</a> ✦</b> &nbsp;•&nbsp;
-  <b>✦ <a href="#-threat-telemetry--charts">Telemetry Charts</a> ✦</b> &nbsp;•&nbsp;
-  <b>✦ <a href="#-core-architecture--flow">Architecture</a> ✦</b> &nbsp;•&nbsp;
-  <b>✦ <a href="#-anomaly-detection-matrix">Detection Rules</a> ✦</b> &nbsp;•&nbsp;
-  <b>✦ <a href="#-quick-start--installation">Quick Start</a> ✦</b> &nbsp;•&nbsp;
-  <b>✦ <a href="#-log-export-specification">Export Schemas</a> ✦</b>
+<p align="center" style="font-size: 1.05rem;">
+  <b>✦ <a href="#-system-overview">Overview</a> ✦</b> &nbsp;•&nbsp;
+  <b>✦ <a href="#-live-soc-preview">Console Preview</a> ✦</b> &nbsp;•&nbsp;
+  <b>✦ <a href="#-telemetry--charts">Telemetry Charts</a> ✦</b> &nbsp;•&nbsp;
+  <b>✦ <a href="#-detection-heuristics">Detection Rules</a> ✦</b> &nbsp;•&nbsp;
+  <b>✦ <a href="#-architecture--flow">Architecture</a> ✦</b> &nbsp;•&nbsp;
+  <b>✦ <a href="#-quick-start">Quick Start</a> ✦</b> &nbsp;•&nbsp;
+  <b>✦ <a href="#-forensic-export">Data Export</a> ✦</b>
 </p>
 
 ---
 
 </div>
 
-## 🌌 01. 𝕆𝕧𝕖𝕣𝕧𝕚𝕖𝕨 & 𝕄𝕚𝕤𝕤𝕚𝕠𝕟
+<h2 style="font-family: 'Bookman Old Style', 'URW Bookman', serif; color: #00ff99;">🌌 01. System Overview</h2>
 
-**CyberSentinal** is a desktop-native Security Operations Center (SOC) packet analysis and anomaly detection suite. Built with Python, CustomTkinter, and Matplotlib, it delivers a high-contrast dark cyberpunk HUD with real-time network event telemetry, multi-vector intrusion simulation, live PPS graphing, and forensic log export.
+<p>
+<b>CyberSentinal</b> is a desktop Security Operations Center (SOC) network traffic monitor and anomaly detection system. It features a dark cyberpunk dashboard built with <b>CustomTkinter</b>, non-blocking packet ingestion, live <b>Matplotlib</b> visual telemetry (PPS graph and protocol donut), real-time rule-based threat classification, and one-click forensic log exports in CSV and JSON formats.
+</p>
 
 ```
   ┌─────────────────────────┐      ┌─────────────────────────┐      ┌─────────────────────────┐
-  │  📡 Packet Ingestion    │ ──❯  │ 🧠 Anomaly Detection    │ ──❯  │ 🖥️ Dual-Chart SOC HUD   │
-  │   (Simulated / Scapy)   │      │    Heuristics Engine    │      │    (PPS + Protocol Pie) │
+  │  📡 Packet Ingestion    │ ──❯  │ 🧠 Heuristic Classifier │ ──❯  │ 🖥️ Dual-Chart SOC HUD   │
+  │   (Simulation / Scapy)  │      │   Port Scan / DoS / Tel │      │    (PPS + Protocol Pie) │
   └─────────────────────────┘      └─────────────────────────┘      └─────────────────────────┘
 ```
 
 > [!NOTE]
-> **Dual Engine Architecture**: CyberSentinal can run in **Simulation Mode** (generating realistic enterprise traffic, port scans, and DoS bursts) or **Live Sniff Mode** using native Scapy bindings.
+> <b>Dual Engine Support</b>: Operates in standalone <b>Simulation Mode</b> (generating realistic internal/external traffic and multi-vector anomalies) or live <b>Scapy Mode</b> for real hardware interface packet sniffing.
 
 ---
 
-## 📸 02. 𝕊𝕆ℂ 𝕋𝕖𝕣𝕞𝕚𝕟𝕒𝕝 ℙ𝕣𝕖𝕧𝕚𝕖𝕨
+<h2 style="font-family: 'Bookman Old Style', 'URW Bookman', serif; color: #00ff99;">📸 02. Live SOC Preview</h2>
 
 <div align="center">
 
 <kbd>
-  <img src="Cybersentinal%20%20ss.png" alt="CyberSentinal SOC Threat Monitor Dashboard" width="95%" style="border-radius: 10px; border: 2px solid #00ff99; box-shadow: 0 0 30px rgba(0, 255, 153, 0.25);" />
+  <img src="Cybersentinal%20%20ss.png" alt="CyberSentinal Dashboard" width="92%" style="border-radius: 8px; border: 2px solid #00ff99; box-shadow: 0 0 25px rgba(0, 255, 153, 0.25);" />
 </kbd>
 
 <br/>
-<sub><b>◈ Figure 1.0:</b> CyberSentinal Main Console — Live Traffic Terminal, Real-Time PPS Line Chart, Protocol Donut Graph, and Filter Bar.</sub>
+<sub><b>◈ Figure 1.0:</b> Real-time CyberSentinal HUD with color-coded traffic terminal, PPS line chart, and protocol breakdown donut graph.</sub>
 
 </div>
 
 ---
 
-## 📊 03. 𝕋𝕙𝕣𝕖𝕒𝕥 𝕋𝕖𝕝𝕖𝕞𝕖𝕥𝕣𝕪 & ℂ𝕙𝕒𝕣𝕥𝕤
+<h2 style="font-family: 'Bookman Old Style', 'URW Bookman', serif; color: #00ff99;">📊 03. Telemetry & Charts</h2>
 
-### 🥧 Simulated Network Traffic & Threat Vector Breakdown
+### 🥧 Simulated Traffic & Threat Composition
 ```mermaid
-pie title Captured Traffic Composition
+pie title Captured Traffic Breakdown
     "Encrypted Web (HTTPS 443)" : 45
-    "Raw TCP Streams & Services" : 20
+    "TCP Streams & Data" : 20
     "Standard Web (HTTP 80)" : 15
     "UDP Datagrams & DNS Queries" : 10
-    "Critical Port Scans & Probes" : 5
+    "Port Scanning Probes" : 5
     "High-Volume UDP Floods (DoS)" : 4
     "Insecure Admin (Telnet 23)" : 1
 ```
 
 ### 🛰️ Subsystem Execution Profile
 ```mermaid
-pie title CPU Cycle & Subsystem Allocation
-    "CustomTkinter GUI Rendering & Events" : 40
-    "Matplotlib Real-time Canvas Redraws" : 28
-    "Threat Detection & Traffic Generator Thread" : 22
-    "Data Structuring & File I/O (CSV/JSON)" : 10
+pie title System Cycle Share
+    "CustomTkinter GUI & Event Loop" : 40
+    "Matplotlib Real-Time Canvas Redraws" : 28
+    "Traffic Ingestion & Detection Thread" : 22
+    "Forensic Logging & File I/O" : 10
 ```
 
 ---
 
-## ⚡ 04. 𝔸𝕟𝕠𝕞𝕒𝕝𝕪 𝔻𝕖𝕥𝕖𝕔𝕥𝕚𝕠𝕟 𝕄𝕒𝕥𝕣𝕚𝕩
+<h2 style="font-family: 'Bookman Old Style', 'URW Bookman', serif; color: #00ff99;">⚡ 04. Detection Heuristics</h2>
 
-CyberSentinal classifies all ingress/egress records into real-time threat levels using dedicated heuristics:
-
-| Anomaly Class | Trigger Condition | Threat Tag | Target / Indicator | Visual Log Output |
+| Anomaly Class | Trigger Condition | Severity Level | Targeted Ports / Vectors | Visual Indicator |
 | :--- | :--- | :---: | :--- | :--- |
-| **Port Scanning** | Multi-port reconnaissance probing | `CRITICAL` | Ports `21, 22, 23, 80, 443, 445, 3389, 8080, 4444` | <span style="color:#ff3366">● PORT SCAN PROBE -> Port X</span> |
-| **DoS / UDP Flooding** | High-volume burst (>1200 Bytes) | `WARN` | Source: Suspicious C2 IP (`45.33.32.156`) | <span style="color:#ffb703">▲ HIGH VOLUME UDP BURST</span> |
-| **Insecure Protocols** | Cleartext management traffic | `WARN` | Telnet Port `23` (`10.0.4.88`) | <span style="color:#ffb703">▲ INSECURE PROTOCOL (TELNET)</span> |
-| **Traffic Rate Spikes** | Sustained packet rate > 25 PPS | `HIGH VOLUME` | High network throughput | <span style="color:#00d4ff">◆ HIGH TRAFFIC RATE</span> |
-| **Benign Traffic** | Standard web, DNS, and TLS flows | `NORMAL` | Certified external CDNs & internal hosts | <span style="color:#00ff99">✔ Routine Payload Transmission</span> |
+| **Port Reconnaissance** | Multi-port scanning probe | <span style="color:#ff3366"><b>CRITICAL</b></span> | `21, 22, 23, 80, 443, 445, 3389, 8080, 4444` | `● PORT SCAN PROBE` |
+| **DoS / UDP Flood** | High-volume burst (>1200 B) | <span style="color:#ffb703"><b>WARN</b></span> | Source: Suspicious C2 (`45.33.32.156`) | `▲ UDP BURST (FLOOD)` |
+| **Cleartext Protocol** | Unencrypted remote admin | <span style="color:#ffb703"><b>WARN</b></span> | Telnet Port `23` (`10.0.4.88`) | `▲ INSECURE TELNET` |
+| **Traffic Rate Spikes** | Sustained rate > 25 PPS | <span style="color:#00d4ff"><b>ELEVATED</b></span> | High network throughput | `◆ HIGH VOLUME` |
+| **Benign Traffic** | Standard web & DNS queries | <span style="color:#00ff99"><b>NORMAL</b></span> | Certified internal & CDN endpoints | `✔ Routine Transmission` |
 
 ---
 
-## 🧬 05. ℂ𝕠𝕣𝕖 𝔸𝕣𝕔𝕙𝕚𝕥𝕖𝕔𝕥𝕦𝕣𝕖 & 𝔽𝕝𝕠𝕨
+<h2 style="font-family: 'Bookman Old Style', 'URW Bookman', serif; color: #00ff99;">🧬 05. Architecture & Flow</h2>
 
 ```mermaid
 flowchart TD
-    subgraph S1 ["📡 INGESTION ENGINE"]
-        A1["Simulation Mode Daemon"] --> B["_process_packet_record()"]
-        A2["Live Scapy Sniff Daemon"] --> B
+    subgraph Ingestion ["📡 INGESTION LAYER"]
+        A1["Simulation Daemon"] --> B["_process_packet_record()"]
+        A2["Live Scapy Sniff"] --> B
     end
 
-    subgraph S2 ["🧠 HEURISTIC CLASSIFIER"]
-        B --> C{"Anomaly Rules Engine"}
-        C -->|Port Scan / DoS / Telnet| D1["Flag: WARN / CRITICAL\nIncrement Threats Detected"]
-        C -->|Standard Payload| D2["Flag: NORMAL\nClassify Protocol"]
-        D1 & D2 --> E["Append to packet_data Memory Buffer"]
+    subgraph Heuristics ["🧠 DETECTION ENGINE"]
+        B --> C{"Rule Matcher"}
+        C -->|Port Scan / DoS / Telnet| D1["Tag: WARN / CRITICAL\nAlert Counter +1"]
+        C -->|Standard Flow| D2["Tag: NORMAL\nProtocol Categorization"]
+        D1 & D2 --> E["packet_data Memory Buffer"]
     end
 
-    subgraph S3 ["🖥️ CUSTOMTKINTER SOC HUD"]
-        E --> F["Live Terminal Feed (Filtered & Highlighted)"]
-        E --> G["Stat Cards: Total / Threat / Alerts / Volume"]
-        E --> H1["Matplotlib Line Chart: PPS Rate (60s Deque)"]
-        E --> H2["Matplotlib Donut Chart: Protocol Breakdown"]
+    subgraph Interface ["🖥️ CUSTOMTKINTER HUD"]
+        E --> F["Live Filtered Terminal Feed"]
+        E --> G["Stat Cards: Total, Threats, Alerts, Volume"]
+        E --> H1["Matplotlib Line: 60s PPS History"]
+        E --> H2["Matplotlib Donut: Protocol Share"]
     end
 
-    subgraph S4 ["💾 FORENSICS EXPORT"]
+    subgraph Storage ["💾 EXPORT"]
         E --> I1["CSV Spreadsheet"]
-        E --> I2["JSON Data Document"]
+        E --> I2["JSON Document"]
     end
 
-    style S1 fill:#0a0c10,stroke:#00d4ff,stroke-width:2px,color:#00d4ff
-    style S2 fill:#0a0c10,stroke:#ff007f,stroke-width:2px,color:#ff007f
-    style S3 fill:#0a0c10,stroke:#00ff99,stroke-width:2px,color:#00ff99
-    style S4 fill:#0a0c10,stroke:#ffb703,stroke-width:2px,color:#ffb703
+    style Ingestion fill:#0a0c10,stroke:#00d4ff,stroke-width:2px,color:#00d4ff
+    style Heuristics fill:#0a0c10,stroke:#ff007f,stroke-width:2px,color:#ff007f
+    style Interface fill:#0a0c10,stroke:#00ff99,stroke-width:2px,color:#00ff99
+    style Storage fill:#0a0c10,stroke:#ffb703,stroke-width:2px,color:#ffb703
 ```
 
 ---
 
-## 🚀 06. ℚ𝕦𝕚𝕔𝕜 𝕊𝕥𝕒𝕣𝕥 & 𝕀𝕟𝕤𝕥𝕒𝕝𝕝𝕒𝕥𝕚𝕠𝕟
+<h2 style="font-family: 'Bookman Old Style', 'URW Bookman', serif; color: #00ff99;">🚀 06. Quick Start</h2>
 
 ### 📋 Prerequisites
 - **Python 3.8+**
-- Standard OS network privileges (for live Scapy sniffing mode)
+- Packages: `customtkinter`, `matplotlib`, `scapy` *(optional for live sniffing)*
 
-### 🔧 Installation
+### 🔧 Setup & Execution
 
 ```bash
 # 1. Clone repository
 git clone https://github.com/<your-username>/CyberSentinal.git
 cd CyberSentinal
 
-# 2. Install required GUI and charting libraries
+# 2. Install dependencies
 pip install customtkinter matplotlib
 
-# 3. (Optional) Install Scapy for live packet sniffing
+# 3. (Optional) Install Scapy for live capture
 pip install scapy
-```
 
-### 🕹️ Execution
-
-```bash
+# 4. Launch the application
 python CyberSentinal.py
 ```
 
 ---
 
-## 🎛️ 07. ℂ𝕠𝕟𝕥𝕣𝕠𝕝𝕤 & 𝔽𝕚𝕝𝕥𝕖𝕣𝕚𝕟𝕘 𝔾𝕦𝕚𝕕𝕖
+<h2 style="font-family: 'Bookman Old Style', 'URW Bookman', serif; color: #00ff99;">💾 07. Forensic Export</h2>
 
 <details open>
-<summary><b>🔍 Live Filter Bar & Search Engine</b></summary>
-
-- **Text Search Box**: Instant real-time substring filtering across IP addresses, ports, protocol names, and log details.
-- **Protocol Dropdown**: Filter visible terminal logs by `ALL`, `TCP`, `UDP`, `ICMP`, `HTTPS`, `HTTP`, `DNS`, or `THREATS ONLY`.
-- **Auto-Scroll Checkbox**: Locks feed focus to the newest incoming packet.
-- **🧹 Clear Button**: Empties visible terminal text buffer without resetting global metrics.
-</details>
-
-<details open>
-<summary><b>🔄 Operations & Telemetry Actions</b></summary>
-
-- **▶ INITIATE SCAN**: Boots background thread worker and initiates live packet stream.
-- **⏹ TERMINATE**: Safely disengages scanner thread and pauses Matplotlib update loops.
-- **💾 EXPORT LOGS**: Opens save dialog to dump full session history into `.csv` or `.json`.
-- **🔄 RESET STATS**: Clears all internal historical deques, protocol counters, and visual charts.
-</details>
-
----
-
-## 💾 08. 𝕃𝕠𝕘 𝔼𝕩𝕡𝕠𝕣𝕥 𝕊𝕡𝕖𝕔𝕚𝕗𝕚𝕔𝕒𝕥𝕚𝕠𝕟
-
-<details>
-<summary><b>📄 JSON Export Schema Example (<code>CyberSentinal_Log_*.json</code>)</b></summary>
+<summary><b>📄 JSON Export Schema (<code>CyberSentinal_Log_*.json</code>)</b></summary>
 
 ```json
 [
@@ -207,7 +188,7 @@ python CyberSentinal.py
 </details>
 
 <details>
-<summary><b>📊 CSV Export Header Specification (<code>CyberSentinal_Log_*.csv</code>)</b></summary>
+<summary><b>📊 CSV Export Format (<code>CyberSentinal_Log_*.csv</code>)</b></summary>
 
 ```csv
 Timestamp,Protocol,Source,Destination,Src_Port,Dst_Port,Size_Bytes,Threat_Level,Info
@@ -217,24 +198,23 @@ Timestamp,Protocol,Source,Destination,Src_Port,Dst_Port,Size_Bytes,Threat_Level,
 
 ---
 
-## 🛡️ 09. 𝔼𝕥𝕙𝕚𝕔𝕒𝕝 𝔻𝕚𝕤𝕔𝕝𝕒𝕚𝕞𝕖𝕣
+<h2 style="font-family: 'Bookman Old Style', 'URW Bookman', serif; color: #00ff99;">🛡️ 08. Ethical Disclaimer</h2>
 
 > [!CAUTION]
-> **FOR AUTHORIZED SECURITY MONITORING & EDUCATIONAL PURPOSES ONLY.**  
-> CyberSentinal is developed for network administrators, researchers, and students. Live packet sniffing must only be conducted on networks and devices you own or are explicitly authorized to audit.
+> <b>Educational & Authorized Monitoring Only</b>: CyberSentinal is intended strictly for educational research and authorized network diagnostics. Unauthorized interception of packets on networks without explicit owner consent is prohibited.
 
 ---
 
-## 📜 10. 𝕃𝕚𝕔𝕖𝕟𝕤𝕖
+<h2 style="font-family: 'Bookman Old Style', 'URW Bookman', serif; color: #00ff99;">📜 09. License</h2>
 
-Distributed under the **[MIT License](LICENSE)**.
+Released under the <b><a href="LICENSE" style="color: #00ff99;">MIT License</a></b>.
 
 <div align="center">
 
 ---
 
-⭐ **Star this repository if you found CyberSentinal useful!** ⭐
+⭐ <b>Star this project if you find CyberSentinal helpful!</b> ⭐
 
-Crafted with 🛡️ by **Cyber Defense Research**
+</div>
 
 </div>
