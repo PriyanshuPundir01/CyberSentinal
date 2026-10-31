@@ -12,10 +12,8 @@ from tkinter import filedialog, messagebox
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 import matplotlib.pyplot as plt
 
-# Suppress Scapy startup warnings (e.g., 'No libpcap provider available')
 logging.getLogger("scapy.runtime").setLevel(logging.ERROR)
 
-# Optional Scapy import for Live Sniffing mode
 try:
     from scapy.all import sniff, IP, TCP, UDP, ICMP
     SCAPY_AVAILABLE = True
@@ -25,7 +23,6 @@ except Exception:
 ctk.set_appearance_mode("Dark")
 ctk.set_default_color_theme("dark-blue")
 
-# Theme Palette (Cyberpunk / Modern SOC)
 COLOR_BG = "#0a0c10"
 COLOR_PANEL = "#12171f"
 COLOR_CARD = "#18202c"
@@ -46,35 +43,29 @@ class CyberSentinalApp(ctk.CTk):
         self.minsize(1100, 650)
         self.configure(fg_color=COLOR_BG)
 
-        # Intercept window close for clean thread shutdown
         self.protocol("WM_DELETE_WINDOW", self.on_close)
 
-        # Core State
         self.sniffing = False
-        self.capture_mode = "Simulation"  # 'Simulation' or 'Live (Scapy)'
-        self.packet_data = []             # List of records: [ts, proto, src, dst, src_port, dst_port, size, threat_tag, info]
+        self.capture_mode = "Simulation"
+        self.packet_data = []
         self.protocol_counts = {"TCP": 0, "UDP": 0, "ICMP": 0, "HTTP": 0, "HTTPS": 0, "DNS": 0, "OTHER": 0}
         self.traffic_history = deque([0]*60, maxlen=60)
         self.bandwidth_history = deque([0]*60, maxlen=60)
         self.stop_event = threading.Event()
         
-        # Real-time metrics
         self.packet_count_second = 0
         self.bytes_count_second = 0
         self.total_bytes = 0
         self.total_threats_detected = 0
         self.current_threat_status = "NORMAL"
         
-        # Anomaly Detection Memory
         self.ip_request_window = defaultdict(lambda: deque(maxlen=30))
         self.port_scan_tracker = defaultdict(set)
         
-        # UI controls state
         self.auto_scroll = True
         self.filter_protocol = "ALL"
         self.search_query = ""
 
-        # Layout Configuration
         self.grid_columnconfigure(1, weight=1)
         self.grid_columnconfigure(2, weight=0)
         self.grid_rowconfigure(1, weight=1)
@@ -84,21 +75,16 @@ class CyberSentinalApp(ctk.CTk):
         self._build_main_terminal()
         self._build_viz_panel()
 
-    # --------------------------------------------------------------------------
-    # UI CONSTRUCTION
-    # --------------------------------------------------------------------------
     def _build_header(self):
         self.header_frame = ctk.CTkFrame(self, fg_color=COLOR_PANEL, corner_radius=0, height=54)
         self.header_frame.grid(row=0, column=0, columnspan=3, sticky="ew", pady=(0, 2))
 
-        # Logo & Title
         title_box = ctk.CTkFrame(self.header_frame, fg_color="transparent")
         title_box.pack(side="left", padx=16)
 
         ctk.CTkLabel(title_box, text="🛡️ CYBERSENTINAL", font=("Consolas", 19, "bold"), text_color=COLOR_ACCENT).pack(side="left")
         ctk.CTkLabel(title_box, text=" | SOC THREAT MONITOR v2.0", font=("Consolas", 12), text_color=COLOR_MUTED).pack(side="left", padx=8)
 
-        # Status Badge
         self.status_badge = ctk.CTkLabel(
             self.header_frame, 
             text="● SYSTEM IDLE", 
@@ -111,10 +97,8 @@ class CyberSentinalApp(ctk.CTk):
         self.sidebar = ctk.CTkScrollableFrame(self, fg_color=COLOR_PANEL, width=230, corner_radius=10)
         self.sidebar.grid(row=1, column=0, sticky="nsew", padx=(10, 5), pady=10)
 
-        # Control Section
         ctk.CTkLabel(self.sidebar, text="CONTROLS", font=("Consolas", 11, "bold"), text_color=COLOR_MUTED).pack(anchor="w", padx=10, pady=(5, 2))
 
-        # Mode Selector
         self.mode_menu = ctk.CTkOptionMenu(
             self.sidebar, 
             values=["Simulation Mode", "Live Sniff (Scapy)"],
@@ -126,7 +110,6 @@ class CyberSentinalApp(ctk.CTk):
         self.mode_menu.set("Simulation Mode")
         self.mode_menu.pack(pady=5, padx=8, fill="x")
 
-        # Scan Buttons
         self.btn_start = ctk.CTkButton(
             self.sidebar, text="▶ INITIATE SCAN", 
             fg_color=COLOR_BG, border_color=COLOR_ACCENT, border_width=1,
@@ -143,7 +126,6 @@ class CyberSentinalApp(ctk.CTk):
         )
         self.btn_stop.pack(pady=4, padx=8, fill="x")
 
-        # Stats Cards
         ctk.CTkLabel(self.sidebar, text="REAL-TIME METRICS", font=("Consolas", 11, "bold"), text_color=COLOR_MUTED).pack(anchor="w", padx=10, pady=(15, 2))
         
         self.create_stat_card("TOTAL PACKETS", "0", "lbl_total", COLOR_TEXT)
@@ -151,7 +133,6 @@ class CyberSentinalApp(ctk.CTk):
         self.create_stat_card("ALERTS FIRED", "0", "lbl_alerts", COLOR_WARN)
         self.create_stat_card("DATA VOLUME", "0.0 KB", "lbl_volume", COLOR_CYAN)
 
-        # Quick Actions
         ctk.CTkLabel(self.sidebar, text="OPERATIONS", font=("Consolas", 11, "bold"), text_color=COLOR_MUTED).pack(anchor="w", padx=10, pady=(15, 2))
 
         self.btn_save = ctk.CTkButton(
@@ -180,13 +161,11 @@ class CyberSentinalApp(ctk.CTk):
         self.log_frame = ctk.CTkFrame(self, fg_color=COLOR_PANEL, corner_radius=10)
         self.log_frame.grid(row=1, column=1, sticky="nsew", padx=5, pady=10)
 
-        # Top Filter Bar
         filter_bar = ctk.CTkFrame(self.log_frame, fg_color="transparent")
         filter_bar.pack(fill="x", padx=10, pady=(10, 4))
 
         ctk.CTkLabel(filter_bar, text="LIVE TRAFFIC FEED", font=("Consolas", 13, "bold"), text_color=COLOR_ACCENT).pack(side="left")
 
-        # Search IP / Keyword
         self.search_entry = ctk.CTkEntry(
             filter_bar, placeholder_text="🔍 Filter IP / Port...", 
             width=170, height=28, fg_color=COLOR_BG, font=("Consolas", 11)
@@ -194,7 +173,6 @@ class CyberSentinalApp(ctk.CTk):
         self.search_entry.pack(side="right", padx=(6, 0))
         self.search_entry.bind("<KeyRelease>", self._on_search_change)
 
-        # Protocol Filter Menu
         self.proto_filter_menu = ctk.CTkOptionMenu(
             filter_bar, 
             values=["ALL", "TCP", "UDP", "ICMP", "HTTPS", "HTTP", "DNS", "THREATS ONLY"],
@@ -204,7 +182,6 @@ class CyberSentinalApp(ctk.CTk):
         )
         self.proto_filter_menu.pack(side="right", padx=(6, 0))
 
-        # Auto-scroll checkbox
         self.chk_autoscroll = ctk.CTkCheckBox(
             filter_bar, text="Auto-Scroll", font=("Consolas", 11),
             command=self._toggle_autoscroll, fg_color=COLOR_ACCENT, text_color=COLOR_TEXT
@@ -212,7 +189,6 @@ class CyberSentinalApp(ctk.CTk):
         self.chk_autoscroll.select()
         self.chk_autoscroll.pack(side="right", padx=10)
 
-        # Clear button
         btn_clear = ctk.CTkButton(
             filter_bar, text="🧹 CLEAR", width=70, height=26,
             fg_color=COLOR_CARD, hover_color="#273347", font=("Consolas", 10, "bold"),
@@ -220,7 +196,6 @@ class CyberSentinalApp(ctk.CTk):
         )
         btn_clear.pack(side="right", padx=(0, 6))
 
-        # Terminal Text Box
         self.log_box = ctk.CTkTextbox(
             self.log_frame, 
             font=("Consolas", 11), 
@@ -230,7 +205,6 @@ class CyberSentinalApp(ctk.CTk):
         )
         self.log_box.pack(fill="both", expand=True, padx=10, pady=(4, 10))
         
-        # Configure tags for rich colors
         self._configure_text_tags()
         self.log_box.insert("end", ">> SYSTEM READY. AWAITING INITIATION...\n", "INFO")
 
@@ -246,12 +220,10 @@ class CyberSentinalApp(ctk.CTk):
         self.viz_frame = ctk.CTkFrame(self, fg_color=COLOR_BG, width=320)
         self.viz_frame.grid(row=1, column=2, sticky="nsew", padx=(5, 10), pady=10)
 
-        # Line Chart Frame
         self.chart1_frame = ctk.CTkFrame(self.viz_frame, fg_color=COLOR_PANEL, corner_radius=10)
         self.chart1_frame.pack(fill="both", expand=True, pady=(0, 8))
         self.setup_line_chart()
 
-        # Donut Chart Frame
         self.chart2_frame = ctk.CTkFrame(self.viz_frame, fg_color=COLOR_PANEL, corner_radius=10)
         self.chart2_frame.pack(fill="both", expand=True)
         self.setup_donut_chart()
@@ -282,9 +254,6 @@ class CyberSentinalApp(ctk.CTk):
         self.canvas2 = FigureCanvasTkAgg(self.fig2, master=self.chart2_frame)
         self.canvas2.get_tk_widget().pack(fill="both", expand=True, padx=4, pady=4)
 
-    # --------------------------------------------------------------------------
-    # THREAT DETECTION & TRAFFIC GENERATION ENGINE
-    # --------------------------------------------------------------------------
     def _on_mode_change(self, choice):
         if "Live Sniff" in choice:
             self.capture_mode = "Live (Scapy)"
@@ -318,7 +287,6 @@ class CyberSentinalApp(ctk.CTk):
             info = "OK"
 
             if roll < 0.05:
-                # Port Scan Simulation
                 src = "185.220.101.5 (Tor Exit Node)"
                 dst = random.choice(ips_internal)
                 proto = "TCP"
@@ -330,7 +298,6 @@ class CyberSentinalApp(ctk.CTk):
                 is_anomaly = True
 
             elif roll < 0.09:
-                # DoS / Flooding Burst
                 src = "45.33.32.156 (Suspicious C2)"
                 dst = "192.168.1.15"
                 proto = "UDP"
@@ -342,7 +309,6 @@ class CyberSentinalApp(ctk.CTk):
                 is_anomaly = True
 
             elif roll < 0.13:
-                # Insecure Protocol / Cleartext Admin
                 src = random.choice(ips_internal)
                 dst = "10.0.4.88"
                 proto = "TCP"
@@ -354,7 +320,6 @@ class CyberSentinalApp(ctk.CTk):
                 is_anomaly = True
 
             else:
-                # Standard Benign Traffic
                 src = random.choice(ips_internal)
                 dst = random.choice(ips_external[:5])
                 proto = random.choices(["HTTPS", "HTTP", "TCP", "UDP", "DNS", "ICMP"], weights=[45, 15, 20, 10, 8, 2])[0]
@@ -370,7 +335,6 @@ class CyberSentinalApp(ctk.CTk):
         now = datetime.datetime.now()
         ts = now.strftime("%H:%M:%S")
 
-        # Anomaly Detection Logic
         if is_anomaly or threat_tag in ["WARN", "CRITICAL"]:
             self.total_threats_detected += 1
             self.current_threat_status = "CRITICAL" if threat_tag == "CRITICAL" else "ELEVATED"
@@ -379,7 +343,6 @@ class CyberSentinalApp(ctk.CTk):
         else:
             self.current_threat_status = "SECURE"
 
-        # Record update
         self.packet_count_second += 1
         self.bytes_count_second += size
         self.total_bytes += size
@@ -392,40 +355,34 @@ class CyberSentinalApp(ctk.CTk):
         record = [ts, proto, src, dst, src_port, dst_port, size, threat_tag, info]
         self.packet_data.append(record)
 
-        # Format line
         log_line = f"[{ts}] {proto:<6} | {src:<28} -> {dst:<28} | {size:>4} B | {info}\n"
         self.after(0, lambda r=record, l=log_line: self.append_log_to_ui(r, l))
 
     def append_log_to_ui(self, record, line_text):
         ts, proto, src, dst, src_port, dst_port, size, threat_tag, info = record
 
-        # Apply Live Filter
         if not self._matches_filter(proto, src, dst, info, threat_tag):
             return
 
         tag = "CRITICAL" if threat_tag == "CRITICAL" else ("WARN" if threat_tag == "WARN" else "NORMAL")
         self.log_box.insert("end", line_text, tag)
 
-        # Truncate buffer if too large to ensure fast UI performance
         if int(self.log_box.index("end-1c").split('.')[0]) > 400:
             self.log_box.delete("1.0", "100.0")
 
         if self.auto_scroll:
             self.log_box.see("end")
 
-        # Update Stat Cards
         total_pkts = sum(self.protocol_counts.values())
         self.lbl_total.configure(text=f"{total_pkts:,}")
         self.lbl_alerts.configure(text=f"{self.total_threats_detected:,}")
 
-        # Human-readable data volume
         if self.total_bytes < 1024 * 1024:
             vol_str = f"{self.total_bytes / 1024:.1f} KB"
         else:
             vol_str = f"{self.total_bytes / (1024 * 1024):.2f} MB"
         self.lbl_volume.configure(text=vol_str)
 
-        # Dynamic Threat Status Badge
         if self.current_threat_status == "CRITICAL":
             self.lbl_threat.configure(text="CRITICAL", text_color=COLOR_ERR)
             self.status_badge.configure(text="● THREAT DETECTED", text_color=COLOR_ERR)
@@ -440,13 +397,11 @@ class CyberSentinalApp(ctk.CTk):
             self.status_badge.configure(text="● MONITORING - ALL CLEAR", text_color=COLOR_ACCENT)
 
     def _matches_filter(self, proto, src, dst, info, threat_tag):
-        # Protocol filter
         if self.filter_protocol == "THREATS ONLY":
             if threat_tag == "NORMAL": return False
         elif self.filter_protocol != "ALL" and proto != self.filter_protocol:
             return False
 
-        # Keyword Search filter
         if self.search_query:
             combined = f"{proto} {src} {dst} {info}".lower()
             if self.search_query not in combined:
@@ -481,14 +436,10 @@ class CyberSentinalApp(ctk.CTk):
     def _toggle_autoscroll(self):
         self.auto_scroll = self.chk_autoscroll.get() == 1
 
-    # --------------------------------------------------------------------------
-    # VISUALIZATION & CHARTS UPDATE
-    # --------------------------------------------------------------------------
     def update_graphs(self):
         if not self.sniffing:
             return
 
-        # Record historical PPS and KB/s
         pps = self.packet_count_second
         kb_s = self.bytes_count_second / 1024.0
         self.traffic_history.append(pps)
@@ -497,14 +448,12 @@ class CyberSentinalApp(ctk.CTk):
         self.packet_count_second = 0
         self.bytes_count_second = 0
 
-        # Update Line Chart (Traffic Volume)
         self.line.set_data(range(len(self.traffic_history)), self.traffic_history)
         self.ax1.set_xlim(0, 60)
         max_pps = max(max(self.traffic_history, default=0) + 5, 25)
         self.ax1.set_ylim(0, max_pps)
         self.canvas1.draw_idle()
 
-        # Update Donut Chart (Protocol Breakdown)
         self.ax2.clear()
         self.ax2.axis('off')
 
@@ -530,13 +479,8 @@ class CyberSentinalApp(ctk.CTk):
             )
 
         self.canvas2.draw_idle()
-
-        # Reschedule next frame
         self.after(1000, self.update_graphs)
 
-    # --------------------------------------------------------------------------
-    # SCAN CONTROLS
-    # --------------------------------------------------------------------------
     def start_scan(self):
         self.sniffing = True
         self.stop_event.clear()
@@ -548,7 +492,6 @@ class CyberSentinalApp(ctk.CTk):
         self.log_box.insert("end", "\n>> [ENGINE STARTED] INITIATING PACKET CAPTURE...\n", "INFO")
         self.log_box.insert("end", f">> [MODE]: {self.capture_mode.upper()}\n\n", "INFO")
 
-        # Launch background traffic engine
         threading.Thread(target=self.traffic_engine_simulation, daemon=True).start()
         self.update_graphs()
 
@@ -581,7 +524,6 @@ class CyberSentinalApp(ctk.CTk):
         self.lbl_volume.configure(text="0.0 KB")
         self.clear_logs()
 
-        # Reset charts
         self.setup_line_chart()
         self.setup_donut_chart()
         messagebox.showinfo("Reset Completed", "All real-time counters and logs have been reset.")
