@@ -41,7 +41,7 @@
 
 ```
   ┌─────────────────────────┐      ┌─────────────────────────┐      ┌─────────────────────────┐
-  │  📡 Ingestion Daemon    │ ──❯  │ 🧠 Heuristics Engine    │ ──❯  │ 🖥️ Dual-Chart SOC HUD   │
+  │  📡 Ingestion Daemon    │ ──❯  │ 🧠 Heuristics Engine   │ ──❯  │ 🖥️ Dual-Chart SOC HUD   │
   │   (Simulated / Scapy)   │      │   Port Scan / DoS / Tel │      │    (PPS + Protocol Pie) │
   └─────────────────────────┘      └─────────────────────────┘      └─────────────────────────┘
 ```
